@@ -1,0 +1,351 @@
+:root {
+  --bg: #1c1c1e;
+  --raised: #2c2c2e;
+  --text: #f2f2f7;
+  --muted: #8e8e93;
+  --yellow: #ffd60a;
+  --titlebar-h: 34px;
+  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI Variable Text', 'Segoe UI', system-ui, sans-serif;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font: 13px/1.3 var(--font);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+.sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+svg {
+  width: 18px;
+  height: 18px;
+  flex: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+button:focus-visible {
+  outline: 2px solid var(--yellow);
+  outline-offset: 2px;
+}
+
+button:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+/* title bar: just the file name, centered like a native window */
+.titlebar {
+  height: var(--titlebar-h);
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 140px; /* clear the window buttons on either platform */
+  -webkit-app-region: drag;
+}
+
+.file-title {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.file-title .name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #d1d1d6;
+}
+
+.file-title .dirty {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--yellow);
+  flex: none;
+}
+
+main {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 2px 14px 12px;
+}
+
+/* empty state */
+.drop {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-radius: 12px;
+  border: 1.5px dashed #3a3a3c;
+  color: var(--muted);
+  transition: border-color 0.15s, color 0.15s, background-color 0.15s;
+}
+
+.drop b {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.drop svg {
+  width: 22px;
+  height: 22px;
+  color: var(--yellow);
+}
+
+.drop:hover {
+  border-color: #5a5a5e;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.drop[hidden],
+.editor[hidden] {
+  display: none;
+}
+
+/* editor */
+.editor {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.editor > .row:first-child {
+  flex: 1;
+  min-height: 52px;
+  align-items: stretch;
+}
+
+.play {
+  width: 40px;
+  flex: none;
+  border-radius: 9px;
+  background: var(--raised);
+  display: grid;
+  place-items: center;
+  margin: 5px 0; /* line up with the tiles inside the canvas */
+  transition: background-color 0.12s;
+}
+
+.play:hover {
+  background: #3a3a3c;
+}
+
+.play svg {
+  width: 18px;
+  height: 18px;
+}
+
+#strip {
+  flex: 1;
+  min-width: 0;
+  display: block;
+  touch-action: none;
+}
+
+.controls {
+  height: 30px;
+}
+
+.time {
+  font-size: 12px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.time b {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.time .hl {
+  color: var(--yellow);
+}
+
+.spacer {
+  flex: 1;
+}
+
+.icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  color: #d1d1d6;
+}
+
+.icon:not(:disabled):hover {
+  background: var(--raised);
+}
+
+.icon svg {
+  width: 17px;
+  height: 17px;
+}
+
+.done {
+  height: 28px;
+  padding: 0 14px;
+  margin-left: 4px;
+  border-radius: 14px;
+  background: var(--yellow);
+  color: #1c1c1e;
+  font-weight: 600;
+}
+
+.done:hover {
+  filter: brightness(1.06);
+}
+
+/* overlays */
+.drop-overlay {
+  position: fixed;
+  inset: 6px;
+  border: 2px dashed var(--yellow);
+  border-radius: 12px;
+  background: rgba(28, 28, 30, 0.88);
+  display: grid;
+  place-items: center;
+  font-weight: 600;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.12s;
+  z-index: 20;
+}
+
+body.dragging .drop-overlay {
+  opacity: 1;
+}
+
+.busy {
+  position: fixed;
+  inset: 0;
+  background: rgba(28, 28, 30, 0.82);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: var(--muted);
+  z-index: 30;
+}
+
+.busy[hidden] {
+  display: none;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-top-color: var(--text);
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.toast {
+  position: fixed;
+  top: 6px;
+  left: 50%;
+  transform: translate(-50%, -8px);
+  opacity: 0;
+  pointer-events: none;
+  background: #3a3a3c;
+  color: var(--text);
+  font-size: 12px;
+  padding: 5px 6px 5px 12px;
+  min-height: 24px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  box-shadow: 0 6px 20px -6px rgba(0, 0, 0, 0.6);
+  transition: opacity 0.16s, transform 0.16s;
+  z-index: 40;
+  max-width: calc(100vw - 24px);
+}
+
+.toast:not(:has(#toast-action:not([hidden]))) {
+  padding-right: 12px;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+  pointer-events: auto;
+}
+
+.toast.error {
+  background: #5c2a2e;
+}
+
+#toast-action {
+  color: var(--yellow);
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+#toast-action:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+#toast-action[hidden] {
+  display: none;
+}
