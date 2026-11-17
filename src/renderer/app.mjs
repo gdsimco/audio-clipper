@@ -400,6 +400,7 @@ document.addEventListener('keydown', (e) => {
       break;
     case 's':
     case 'S':
+      e.preventDefault(); // handled here; on macOS this stops the Split menu item firing too
       split();
       break;
     case 'Delete':

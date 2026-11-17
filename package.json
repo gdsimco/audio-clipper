@@ -10,7 +10,8 @@
     "test": "node test/run-tests.mjs",
     "icon": "electron scripts/make-icon.js",
     "dist:win": "electron-builder --win",
-    "dist:mac": "electron-builder --mac"
+    "dist:mac": "electron-builder --mac",
+    "mac": "mac/build.sh"
   },
   "dependencies": {
     "lamejs": "1.2.1"
