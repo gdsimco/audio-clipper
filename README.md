@@ -2,6 +2,18 @@
 
 A tiny audio trimmer modeled on the iPhone/Mac video trim tool. Open an audio file, drag the yellow handles, split it into clips, and export.
 
+## Install on a Mac
+
+From a clone of this repo, in Terminal:
+
+```bash
+mac/install.sh --default
+```
+
+This builds the app (about 1 MB, no Electron), puts it in Applications, and makes it open `.wav` and `.mp3` files when you double-click them. Leave off `--default` to only install it. To pick the file types, list them, for example `--default wav,mp3,m4a,flac`. Run the same command again after `git pull` to update, or `mac/install.sh --uninstall` to remove it.
+
+You need macOS 13 or newer and Apple's command line tools. If they're missing, the script opens Apple's installer; run it again when that finishes. Because the app is built on your own Mac, it opens without a security warning. To change which app opens a file type later, use Finder → Get Info → *Open with* → *Change All…*.
+
 ## Using it
 
 | To… | Do this |

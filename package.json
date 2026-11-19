@@ -11,7 +11,8 @@
     "icon": "electron scripts/make-icon.js",
     "dist:win": "electron-builder --win",
     "dist:mac": "electron-builder --mac",
-    "mac": "mac/build.sh"
+    "mac": "mac/build.sh",
+    "install:mac": "mac/install.sh --default"
   },
   "dependencies": {
     "lamejs": "1.2.1"
